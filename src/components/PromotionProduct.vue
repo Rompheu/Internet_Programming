@@ -6,7 +6,7 @@
         >
             <div class="wrapper">
                 <span class="text">{{ text }}</span>
-                <Button @click="shopNow(promotion)"></Button>
+                <Button @click="shopNow(text)">Shop Now</Button>
             </div>
             <img :src="picture" alt="item picture" class="item-picture" />
         </button>
@@ -28,8 +28,8 @@
         },
 
         methods:{
-            shopNow(promotion) {
-             alert("Let's shop: "+promotion.title);
+            shopNow(text) {
+             alert("Let's shop: "+text);
             }
         }
     };
