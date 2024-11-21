@@ -3,12 +3,13 @@
         <button type="button" 
         :style="{backgroundColor: color}"
         class="btn"
+         @click="shopNow(promotion)"
         >
             <div class="wrapper">
-                <span class="text">{{ text }}</span>
-                <Button @click="shopNow(text)">Shop Now</Button>
+                <span class="title">{{ title }}</span>
+                <Button @click="shopNow(title)"></Button>
             </div>
-            <img :src="picture" alt="item picture" class="item-picture" />
+            <img :src="image" alt="item image" class="item-image" />
         </button>
     </div>
 </template>
@@ -22,14 +23,16 @@
         },
 
         props: {
+        title: String,
+        url: String,
         color: String,
-        text: String,
-        picture: String,
+        buttonColor: String,
+        image: String,
         },
 
         methods:{
-            shopNow(text) {
-             alert("Let's shop: "+text);
+            shopNow(title) {
+             alert("Let's shop: "+this.title);
             }
         }
     };
@@ -57,7 +60,7 @@
         padding-left: 10px;
     }
 
-    .text{
+    .title{
         color: #253D4E;
         font-family:cursive;
         font-size: 13px;
@@ -65,7 +68,7 @@
         text-align: left;
     }
 
-    .item-picture {
+    .item-image {
         display: flex;
         align-self: self-end;
         max-width: 150px;
