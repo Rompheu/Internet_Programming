@@ -3,7 +3,6 @@
       <div class="header">
         <h3 class="section-title">Popular Products</h3>
       </div>
-      
       <div class="products-grid">
         <div v-for="product in products" :key="product.id" class="product-card">
           <div class="product-badge" v-if="product.promotionAsPercentage">

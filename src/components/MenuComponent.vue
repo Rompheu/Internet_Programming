@@ -13,14 +13,15 @@
       </div>
   
       <!-- Popular Products Section -->
-      <div class="products-grid">
+
+      <!-- <div class="products-grid">
         <div v-for="product in filteredProducts" :key="product.id" class="product-card">
           <img :src="product.image" alt="product.name" class="product-image" />
           <h4 class="product-name">{{ product.name }}</h4>
-          <div class="product-category">{{ product.group }}</div>
-          <div class="product-price">${{ product.price }}</div>
-        </div>
-      </div>
+          <div class="product-category">{{ product.group }}</div> -->
+          <!-- <div class="product-price">${{ product.price }}</div> -->
+        <!-- </div>
+      </div> -->
     </div>
   </template>
   
