@@ -1,5 +1,9 @@
 <template>
     <div class="Wrapper">
+      <div>
+        <NavigationPage />
+        
+      </div>
       <div v-if="Categories.length" class="Container">
         <ProductCategory v-for="category in Categories" 
         :key="category.id"   
@@ -35,13 +39,15 @@
   import PromotionProduct from '@/components/PromotionProduct.vue';
   import MenuComponent from '@/components/MenuComponent.vue';
   import ProductComponent from '@/components/ProductComponent.vue';
+  import NavigationPage from '@/components/NavigationPage.vue';
   
   export default{
     components: {
         ProductCategory,
         PromotionProduct,
         MenuComponent,
-        ProductComponent
+        ProductComponent,
+        NavigationPage
     },
   
     data() {
