@@ -1,16 +1,18 @@
 <template>
   <div id="app">
-    <Header />
+    
     <router-view />
   </div>
 </template>
 
 <script>
 import HeaderComponent from './components/Header.vue';
+import MenuComponent from './components/Menu.vue'
 
 export default {
   components: {
-    HeaderComponent
+    HeaderComponent,
+    MenuComponent
   }
 };
 </script>
