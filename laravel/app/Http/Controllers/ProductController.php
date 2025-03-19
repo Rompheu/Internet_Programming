@@ -2,37 +2,44 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    // GET /api/products
-    public function getProducts() {
-        return response()->json(["message" => "Listing all products"]);
+    // --- Get /api/products
+    public function getProducts(){
+        return Product::all();
     }
 
-    // POST /api/products
+    // --- Post /api/products
     public function createProduct(Request $request) {
-        return response()->json(["message" => "Product created successfully"], 201);
+        $product = new Product;
+        $product->name = $request->name;
+        $product->category_id = $request->category_id;
+        $product->pricing = $request->pricing;
+        $product->save();
+        return $product;    
     }
 
-    // GET /api/products/{productId}
+    // --- Get /api/products/{productId}
     public function getProduct($productId) {
-        return response()->json(["message" => "Showing product with ID: $productId"]);
-    }
-
-    // PATCH /api/products/{productId}
+        $product = Product::find($productId);
+        return $product;   
+    }    
+    
+    // --- Patch /api/products/{productId}
     public function updateProduct(Request $request, $productId) {
-        return response()->json(["message" => "Product with ID $productId updated successfully"]);
+        $product = Product::find($productId);
+        $product->name = $request->name;
+        $product->save();
+        return $product;
     }
-
-    // DELETE /api/products/{productId}
+    
+    // --- Delete /api/products/{productId}
     public function deleteProduct($productId) {
-        return response()->json(["message" => "Product with ID $productId deleted"], 204);
-    }
-
-    // GET /api/categories/{categoryId}/products
-    public function getByCategory($categoryId) {
-        return response()->json(["message" => "Listing products for category with ID: $categoryId"]);
+        $product = Product::find($productId);
+        $product->delete();
+        return $product;
     }
 }

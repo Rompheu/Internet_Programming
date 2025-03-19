@@ -1,42 +1,42 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    // GET /api/categories
-    public function getCategories() {
-        return response()->json(["message" => "Getting list of categories"]);
+    // --- Get /api/categories
+    public function getCategories(){
+        return Category::all();
     }
 
-    // POST /api/categories
+    // --- Post /api/categories
     public function createCategory(Request $request) {
-        return response()->json(["message" => "Creating a new category"], 201);
+        $category = new Category();
+        $category->name = $request->name;
+        $category->save();
+        return $category;    
     }
 
-    // GET /api/categories/{categoryId}
+    // --- Get /api/categories/{categoryId}
     public function getCategory($categoryId) {
-        return response()->json([
-            "message"    => "Getting one category based on given categoryId",
-            "categoryId" => $categoryId
-        ]);
+        $category = Category::find($categoryId);
+        return $category;   
     }
 
-    // PATCH /api/categories/{categoryId}
+    // --- Patch /api/categories/{categoryId}
     public function updateCategory(Request $request, $categoryId) {
-        return response()->json([
-            "message"    => "Updating one category based on given categoryId",
-            "categoryId" => $categoryId
-        ]);
+        $category = Category::find($categoryId);
+        $category->name = $request->name;
+        $category->save();
+        return $category;
     }
 
-    // DELETE /api/categories/{categoryId}
+    // --- Delete /api/categories/{categoryId}
     public function deleteCategory($categoryId) {
-        return response()->json([
-            "message"    => "Deleting one category based on given categoryId",
-            "categoryId" => $categoryId
-        ], 204);
+        $category = Category::find($categoryId);
+        $category->delete();
+        return $category;
     }
 }
