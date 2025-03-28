@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('model_id')->nullable();
             $table->string('action');
             $table->json('changes')->nullable();
-            $table->timestamp('created_at')->useCurrent();
+            $table->timestamps();
         });
     }
 
