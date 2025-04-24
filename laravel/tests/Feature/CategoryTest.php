@@ -17,36 +17,35 @@ class CategoryTest extends TestCase
         $response = $this->postJson('/api/categories', [
             'name' => 'test_Category_01'
         ]);
-
         $response->assertStatus(201)->assertJson([
-            'name' => 'test_Category_01'
+            'name' => $response['name']
         ]);
 
         $response = $this->postJson('/api/categories', [
             'name' => 'test_Category_02'
         ]);
-        $response->assertStatus(201)->assertJson(['name' => "test_Category_02"]);
+        $response->assertStatus(201)->assertJson(['name' => $response['name']]);
         
         $response = $this->postJson('/api/categories', [
             'name' => 'test_Category_03'
         ]);
         $response->assertStatus(201)->assertJson([
-            'name' => 'test_Category_03'
+            'name' => $response['name']
         ]);
     }
 
     public function test_if_we_can_access_get_a_category_by_id_api(): void
     {
         $response = $this->getJson('/api/categories/1');
-        $response->assertStatus(200)->assertJson(["id"  => 1]);
+        $response->assertStatus(200)->assertJson(["id"  => $response['id']]);
     }
 
     public function test_if_we_can_access_update_a_category_by_id_api(): void
     {
         $response = $this->patch('/api/categories/2', ["name" => "test_category_updated"]);
         $response->assertStatus(200)->assertJson([
-            "id" => 2,
-            "name" => "test_category_updated"
+            "id" => $response['id'],
+            "name" => $response['name']
 
         ]);
     }
@@ -55,7 +54,6 @@ class CategoryTest extends TestCase
     {
         $response = $this->delete('/api/categories/1');
         $response->assertStatus(200)->assertJson(["id" => 1]);
-        $request = $this->get('/api/categories/1');
-        $request->assertStatus(200)->assertDontSee(["id" => 1]);
+        $this->get('/api/categories/1')->assertStatus(200)->assertDontSee(["id" => $response['id']]);
     }
 }

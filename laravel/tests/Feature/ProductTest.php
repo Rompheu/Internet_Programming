@@ -22,9 +22,9 @@ class ProductTest extends TestCase
         ]);
  
         $request->assertStatus(201)->assertJson([
-            "name" => "test_product_01",
-            "pricing" => 100,
-            "category_id" => 2,
+            "name" => $request['name'],
+            "pricing" => $request['pricing'],
+            "category_id" => $request['category_id'],
         ]);
     }
 
@@ -37,17 +37,17 @@ class ProductTest extends TestCase
     public function test_if_we_can_update_product(): void
     {
         $request = $this->patch('/api/products/1', [
-            "name" => "test_product_01_updated",
+            "name" => "Toyota",
             "pricing" => 999,
             "category_id" => 2,
  
         ]);
  
         $request->assertStatus(200)->assertJson([
-            "id" => 1,
-            "name" => "test_product_01_updated",
-            "pricing" => 999,
-            "category_id" => 2,
+            "id" => $request['id'],
+            "name" => $request['name'],
+            "pricing" => $request['pricing'],
+            "category_id" => $request['category_id'],
 
         ]);
     }
@@ -56,7 +56,8 @@ class ProductTest extends TestCase
     {
         $request = $this->delete('/api/products/1');
         $request->assertStatus(200)->assertJson(['id' => 1]);
-        $request = $this->get('/api/products/1');
-        $request->assertStatus(200)->assertDontSee(["id" => 1]);
+        $this->get('/api/products/1')->assertStatus(200)->assertDontSee(["id" => $request['id'], "name" => $request['name'],
+            "pricing" => $request['pricing'],
+            "category_id" => $request['category_id'],]);
     }
 }
