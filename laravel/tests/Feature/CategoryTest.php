@@ -17,7 +17,7 @@ class CategoryTest extends TestCase
         $response = $this->postJson('/api/categories', [
             'name' => 'test_Category_01'
         ]);
-        $data = $response->json();
+        $data = $response->json(); //to get directly the data from the response
         $response->assertStatus(201)->assertJson([
             'name' => $data['name']
         ]);
