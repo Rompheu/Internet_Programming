@@ -20,7 +20,7 @@ services:
       - laravel
   db:
     image: mysql:8
-    restart: always
+    # restart: always
     container_name: mysql_db
     ports:
       - "3307:3306"

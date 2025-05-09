@@ -14,43 +14,38 @@ class UploadController extends Controller
             'document' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
     
-        // Store to local 'public' disk
-        $path = $request->file('document')->store('uploads');
-
-        // Store to minio
-        $file = $request->file('document');
-        $fileName = basename($path);
-
-        $minioPath = false;
-        if (Storage::disk('minio')->putFileAs('uploads', $file, $fileName)) {
-            $minioPath = 'uploads/' . $fileName;
-        }
+        // Store the file to local and minio
+        $path = $request->file('document')->store('uploads', 'minio');
     
         return response()->json([
-            'local_path' => $path,
-            'minio_path' => $minioPath,
+            'path' => $path,
         ], 200);
     }    
 
     public function store(Request $request)
     {
      $request->validate([
-     'image' => 'required|image|max:2048' // Validation rules for upload
+     'document' => 'required|image|max:2048' // Validation rules for upload
      ]);
-     $image = $request->file('image');
+     $image = $request->file('document');
      $fileName = uniqid() . '.' . $image->getClientOriginalExtension(); 
      $path = $image->storeAs('uploads', $fileName); // Store the original image
      // (Optional) Using Intervention Image
      $thumbnailPath = 'thumbnails/' . $fileName;
-     $intervention = Image::make($image->getRealPath());
-     $intervention->fit(200, 200, function ($constraint) {
-     $constraint->aspectRatio();
-     })->save(storage_path('app/' . $thumbnailPath));
+        $intervention = Image::make($image->getRealPath());
+        $intervention->fit(200, 200, function ($constraint) {
+            $constraint->aspectRatio();
+        })->save(storage_path('app/public/' . $thumbnailPath));
+
+        Storage::put($thumbnailPath, $intervention);
+        
      // (Alternative) Using pure Imagick
     //  $imagick = new Imagick(storage_path('app/uploads/' . $fileName));
     //  $imagick->resizeImage(200, 200, Imagick::FILTER_TRIANGLE, 1);
     //  $imagick->writeImage(storage_path('app/thumbnails/' . $fileName));
      // Update your Image model to store original and thumbnail paths 
-     return redirect()->route('gallery.index')->with('success', 'Image uploaded');
+     return response()->json([
+        'path' => $path,
+    ], 200);
     }
 }
