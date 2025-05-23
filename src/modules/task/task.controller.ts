@@ -9,18 +9,19 @@ import {
 } from '@nestjs/common';
 import { TasksService } from './task.service';
 import { Task } from './task.entity';
+
 @Controller('tasks')
 export class TasksController {
-  constructor(private readonly taskService: TasksService) {} // Use TasksService
-
-  @Get('/:id')
-  getTask(@Param('id') id: string) {
-    return this.taskService.findOne(Number(id)); // Matches service method name
-  }
+  constructor(private readonly taskService: TasksService) {}
 
   @Get('/')
   getAllTasks() {
-    return this.taskService.findAll(); // Add this to expose findAll
+    return this.taskService.findAll();
+  }
+
+  @Get('/:id')
+  getTask(@Param('id') id: string) {
+    return this.taskService.findOne(Number(id));
   }
 
   @Post('/')
@@ -30,11 +31,16 @@ export class TasksController {
 
   @Patch('/:id')
   updateTask(@Body() body: any, @Param('id') id: string) {
-    return this.taskService.update(Number(id), body); // Matches service method name
+    return this.taskService.update(Number(id), body);
   }
 
   @Delete('/:id')
   deleteTask(@Param('id') id: string) {
-    return this.taskService.remove(Number(id)); // Matches service method name
+    return this.taskService.remove(Number(id));
+  }
+
+  @Delete('/')
+  deleteAllTasks() {
+    return this.taskService.removeAll();
   }
 }

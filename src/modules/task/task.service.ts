@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Task } from './task.entity';
@@ -7,28 +7,45 @@ import { Task } from './task.entity';
 export class TasksService {
   constructor(
     @InjectRepository(Task)
-    private tasksRepo: Repository<Task>,
+    private taskRepository: Repository<Task>,
   ) {}
 
-  create(taskData: Partial<Task>) {
-    const task = this.tasksRepo.create(taskData);
-    return this.tasksRepo.save(task);
+  // Fetch all tasks
+  findAll(): Promise<Task[]> {
+    return this.taskRepository.find();
   }
 
-  findAll() {
-    return this.tasksRepo.find({ relations: ['user'] });
+  // Find one task by ID
+  async findOne(id: number): Promise<Task> {
+    const task = await this.taskRepository.findOneBy({ id });
+    if (!task) {
+      throw new NotFoundException(`Task with ID ${id} not found`);
+    }
+    return task;
   }
 
-  findOne(id: number) {
-    return this.tasksRepo.findOne({ where: { id }, relations: ['user'] });
+  // Create a new task
+  async create(taskData: Partial<Task>): Promise<Task> {
+    const task = this.taskRepository.create(taskData);
+    return this.taskRepository.save(task);
   }
 
-  async update(id: number, updateData: Partial<Task>) {
-    await this.tasksRepo.update(id, updateData);
+  // Update a task
+  async update(id: number, taskData: Partial<Task>): Promise<Task> {
+    await this.taskRepository.update(id, taskData);
     return this.findOne(id);
   }
 
-  remove(id: number) {
-    return this.tasksRepo.delete(id);
+  // Delete a single task by ID
+  async remove(id: number): Promise<void> {
+    const result = await this.taskRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Task with ID ${id} not found`);
+    }
+  }
+
+  // Delete all tasks
+  async removeAll(): Promise<void> {
+    await this.taskRepository.clear();
   }
 }
