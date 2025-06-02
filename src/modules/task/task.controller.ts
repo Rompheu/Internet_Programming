@@ -6,9 +6,11 @@ import {
   Param,
   Patch,
   Post,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { TasksService } from './task.service';
-import { Task } from './task.entity';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -24,9 +26,10 @@ export class TasksController {
     return this.taskService.findOne(Number(id));
   }
 
-  @Post('/')
-  create(@Body() taskData: Partial<Task>) {
-    return this.taskService.create(taskData);
+  @Post()
+  @UsePipes(new ValidationPipe({ whitelist: true }))
+  create(@Body() createTaskDto: CreateTaskDto) {
+    return this.taskService.create(createTaskDto);
   }
 
   @Patch('/:id')
