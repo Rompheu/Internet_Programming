@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Book {
+  id: Int!
+  title: String!
+  author: String!
+  price: Int!
+}
+
+type Student {
+  id: ID!
+  name: String!
+  idCard: String!
+  class: String!
+}
+
+type Attendance {
+  session: String!
+  status: String!
+  student_id: Int!
+  marker: String!
+}
+
+type Query {
+  getAllBooks: [Book!]!
+  getBookById(id: Float!): Book
+  getStudentsByClass(className: String!): [Student!]!
+  students: [Student!]!
+  countAttendanceByClass(className: String!): Int!
+  countAttendanceByStudentId(student_id: Int!): Int!
+}
+
+type Mutation {
+  addBook(title: String!, price: Float!): Book!
+  updateBook(id: Float!, title: String!, price: Float!): Book!
+  deleteBook(id: Float!): Boolean!
+  enrollStudent(input: CreateStudentInput!): Student!
+  removeStudent(id: Int!): Boolean!
+  updateStudent(id: Int!, input: CreateStudentInput!): Student
+  markAttendance(input: CreateAttendanceInput!): Attendance!
+  removeAttendance(student_id: Int!, session: String!): Boolean!
+}
+
+input CreateStudentInput {
+  name: String!
+  idCard: String!
+  class: String!
+}
+
+input CreateAttendanceInput {
+  session: String!
+  status: String!
+  student_id: Int!
+  marker: String!
+}
